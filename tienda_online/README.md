@@ -35,8 +35,8 @@ Ventaja: Podemos modificar el comportamiento del carrito sin tocar su estructura
 # Como usar
 1. Clona este repositorio. 
 2. Abre sin_patrones.html o con_patrones.html en tu navegador
-3. Haz clic en “Mostrar Productos” si ingresas a "sin_patrones.html" y si ingresas a "con_patrones.html" da clic en cualquiera de los
-botones "Agregar celular" o "Agregar camisa"
+3. Haz clic en “Mostrar Productos” para que se agreguen los productos. En la vista sin patrones solo se agrega una vez y en la vista con
+patrones se pueden agregar varias veces los productos.
 4. Veras como se actualiza la lista y el total automaticamente
 
 
