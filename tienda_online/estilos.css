@@ -19,5 +19,5 @@ button {
 #productos, #carrito {
   margin-top: 15px; /* Espacio por arriba */
   padding: 10px; /* Espacio interno */
-  background-color: #f0f0f0; /* Fondo gris claro */
+  background-color: #f0f0f0d1; /* Fondo gris claro */
 }
