@@ -2,245 +2,187 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tienda Online Con Patrones</title>
-    <link rel="stylesheet" href="estilos.css"> <!-- Estilos separados -->
+    <link rel="stylesheet" href="estilos.css" />
 </head>
 <body>
-    
     <h1>TIENDA ONLINE CON PATRONES DE DISEÑO</h1>
-    
-    <!-- Botones para agregar productos -->
-    <button onclick="agregarCelular()">Agregar Celular</button>
-    <button onclick="agregarCamisa()">Agregar Camisa</button>
-    
-    <!-- Resultado se muestra aqui -->
-    <pre id="resultado"></pre>
-<script>
-    // -------------------------------
-    // PATRON OBSERVER
-    // -------------------------------
 
-    // Clase base para observadores
-    class Observer {
-        update(mensaje) {
-            console.error("Error: metodo update no implementado");
+    <!-- Boton para mostrar productos -->
+    <button id="mostrarProductos">Mostrar productos</button>
+    
+    <!-- Contenedor donde se mostrara el contenido de la tienda -->
+    <div id="vistaTienda"></div>
+
+<script>
+    // Clase base para productos
+    class Producto {
+        constructor(nombre, precio) {
+            this.nombre = nombre; // Nombre del producto
+            this.precio = precio; // Precio del producto
+    }
+
+    // Metodo comun para mostrar informacion
+    getInfo() {
+        return `${this.nombre} - $${this.precio}`;
     }
 }
 
-    // Clase Notificador que maneja los observadores
-    class Notificador {
-        constructor() {
-            this.observadores = []; // Lista de observadores
+    // Producto tipo electronico (usa herencia)
+    class Electronico extends Producto {
+        constructor(nombre, precio, garantia) {
+            super(nombre, precio); // Llama al constructor de Producto
+            this.garantia = garantia; // Garantia especifica
     }
 
-      // Suscribir nuevos observadores
-    suscribir(obs) {
+    getInfo() {
+        return `${super.getInfo()} (Garantia: ${this.garantia} meses)`;
+    }
+}
+
+// Producto tipo ropa (usa herencia)
+class Ropa extends Producto {
+    constructor(nombre, precio, talla) {
+        super(nombre, precio); // Llama al constructor base
+        this.talla = talla; // Talla especifica
+    }
+
+    getInfo() {
+        return `${super.getInfo()} - Talla: ${this.talla}`;
+    }
+}
+
+    // Clase Observador para el patron Observer
+    class Observador {
+        actualizar(info) {
+            console.log("Observador actualizado:", info);
+    }
+}
+
+    // Clase principal del carrito (Subject del patron Observer)
+    class Carrito {
+        constructor() {
+            this.productos = []; // Lista de productos en el carrito
+            this.observadores = []; // Lista de observadores que escuchan los cambios
+    }
+
+      // Metodo para agregar productos al carrito
+    agregarProducto(producto) {
+        this.productos.push(producto); // Agrega el producto a la lista
+        this.notificar(); // Llama a los observadores para actualizar la vista
+    }
+
+    // Metodo para registrar un observador
+    agregarObservador(obs) {
         this.observadores.push(obs);
     }
 
-      // Notificar a todos con un mensaje
-    notificar(mensaje) {
-        this.observadores.forEach(o => o.update(mensaje));
+    // Metodo que notifica a todos los observadores
+    notificar() {
+        this.observadores.forEach(obs => obs.actualizar(this.productos));
+    }
+
+    // Calcula el total del carrito
+    getTotal() {
+        return this.productos.reduce((total, p) => total + p.precio, 0);
     }
 }
 
-    // -------------------------------
-    // PATRON FACTORY METHOD
-    // -------------------------------
-    // Clase base Producto
-    class Producto {
-        constructor(nombre, precio) {
-            this._nombre = nombre;
-            this._precio = precio;
-    }
-
-    getNombre() { return this._nombre; }
-    getPrecio() { return this._precio; }
-
-    mostrarInfo() {
-        return `${this._nombre} - $${this._precio}`;
-    }
-}
-
-    // Producto Electronico
-    class ProductoElectronico extends Producto {
-        constructor(nombre, precio, garantia) {
-            super(nombre, precio);
-            this._garantia = garantia;
-    }
-
-    mostrarInfo() {
-        return `${super.mostrarInfo()} (Garantia: ${this._garantia} meses)`;
-    }
-}
-
-    // Producto Ropa
-    class ProductoRopa extends Producto {
-        constructor(nombre, precio, talla) {
-            super(nombre, precio);
-            this._talla = talla;
-    }
-
-    mostrarInfo() {
-        return `${super.mostrarInfo()} - Talla: ${this._talla}`;
-    }
-}
-
-    // Fabrica de productos
-    class FactoryProducto {
-        crear(tipo, nombre, precio, extra) {
-            if (tipo === "electronico") {
-                return new ProductoElectronico(nombre, precio, extra);
-            } else if (tipo === "ropa") {
-                return new ProductoRopa(nombre, precio, extra);
-            } else {
-                return new Producto(nombre, precio);
-            }
+// Patron Factory Method para crear productos dependiendo del tipo
+class FabricaProducto {
+    static crearProducto(tipo, nombre, precio, extra) {
+        switch (tipo) {
+            case "electronico":
+            return new Electronico(nombre, precio, extra);
+            
+            case "ropa":
+            return new Ropa(nombre, precio, extra);
+            
+            default:
+            return new Producto(nombre, precio);
         }
     }
+}
 
-    // -------------------------------
-    // PATRON STRATEGY
-    // -------------------------------
-    // Clase base de estrategia de pago
-    class EstrategiaPago {
-        pagar(monto) {
-            console.error("Error: pagar() no implementado");
+// Patron Strategy para aplicar diferentes metodos de pago
+class PagoTarjeta {
+    pagar(total) {
+        return `Pago con tarjeta: $${total}`;
     }
 }
 
-    // Pago con tarjeta
-    class PagoTarjeta extends EstrategiaPago {
-        pagar(monto) {
-            return `Pago con tarjeta: $${monto}`;
+    class PagoPayPal {
+        pagar(total) {
+            return `Pago con PayPal: $${total}`;
     }
 }
 
-    // Pago con PayPal
-    class PagoPayPal extends EstrategiaPago {
-        pagar(monto) {
-            return `Pago con PayPal: $${monto}`;
+    // Clase que utiliza el patron Strategy para elegir forma de pago
+    class ProcesadorPago {
+        constructor(estrategia) {
+            this.estrategia = estrategia;
+    }
+
+    procesarPago(total) {
+        return this.estrategia.pagar(total); // Aplica el metodo seleccionado
     }
 }
 
-    // -------------------------------
-    // OBSERVADOR - USUARIO
-    // -------------------------------
-
-    class Usuario extends Observer {
-        constructor(nombre) {
-            super();
-            this.nombre = nombre;
+    // Simula una vista que actua como observador
+    class VistaTienda {
+        constructor(carrito) {
+            this.carrito = carrito;
+            carrito.agregarObservador(this); // Se registra como observador
+            this.elemento = document.getElementById("vistaTienda");
     }
 
-    update(mensaje) {
-        console.log(`${this.nombre} recibio: ${mensaje}`);
-    }
-}
-
-    // -------------------------------
-    // CARRITO (con observadores)
-    // -------------------------------
-
-    class Carrito {
-        constructor() {
-            this.productos = [];
-            this.observadores = [];
+    // Este metodo se llama automaticamente cuando se agregan productos
+    actualizar(productos) {
+        this.mostrar(productos);
     }
 
-      // Registrar observador del carrito
-    registrarObservador(callback) {
-        this.observadores.push(callback);
-    }
+    mostrar(productos) {
+        let contenido = "<h2>Productos:</h2><ul>";
+        productos.forEach(p => {
+            contenido += `<li>${p.getInfo()}</li>`;
+        });
+        contenido += "</ul>";
 
-      // Notificar a observadores (actualizar vista)
-    notificarObservadores() {
-        this.observadores.forEach(cb => cb());
-    }
+        // Mostrar notificacion de usuarios
+        contenido += "<p><strong>Usuarios notificados:</strong> Ana y Luis</p>";
 
-      // Agregar producto y notificar
-    agregar(producto) {
-        this.productos.push(producto);
-        this.notificarObservadores();
-    }
+        const total = this.carrito.getTotal();
+        contenido += `<p><strong>Total del carrito:</strong> $${total}</p>`;
 
-      // Calcular total
-    total() {
-        return this.productos.reduce((acc, p) => acc + p.getPrecio(), 0);
-    }
+        // Probar los metodos de pago (Strategy)
+        const pagoTarjeta = new ProcesadorPago(new PagoTarjeta());
+        const pagoPayPal = new ProcesadorPago(new PagoPayPal());
 
-      // Obtener productos
-    getProductos() {
-        return this.productos;
+        contenido += "<p><strong>Metodos de pago:</strong></p><ul>";
+        contenido += `<li>${pagoTarjeta.procesarPago(total)}</li>`;
+        contenido += `<li>${pagoPayPal.procesarPago(total)}</li>`;
+        contenido += "</ul>";
+
+        // Insertar el contenido en la vista
+        this.elemento.innerHTML = contenido;
     }
 }
 
-    // -------------------------------
-    // VARIABLES GLOBALES
-    // -------------------------------
+    // Crear instancias
+    const carrito = new Carrito(); // Carrito vacio
+    const vista = new VistaTienda(carrito); // Vista ligada al carrito
 
-    const factory = new FactoryProducto();
-    const carrito = new Carrito();
-    const notificador = new Notificador();
+    // Simular clic para mostrar productos
+    document.getElementById("mostrarProductos").addEventListener("click", () => {
+    // Crear productos usando la fabrica
+    const celular = FabricaProducto.crearProducto("electronico", "Celular", 500, 12);
+    const camisa = FabricaProducto.crearProducto("ropa", "Camisa", 30, "M");
 
-    // Usuarios observadores
-    const ana = new Usuario("Ana");
-    const luis = new Usuario("Luis");
-    notificador.suscribir(ana);
-    notificador.suscribir(luis);
-
-    // -------------------------------
-    // FUNCIONES PARA ACTUALIZAR LA VISTA
-    // -------------------------------
-
-    function actualizarVista() {
-      // Notificamos a los usuarios (Observer)
-    notificador.notificar("¡Se agrego un producto!");
-
-    // Obtener productos y total
-    const productos = carrito.getProductos();
-    const total = carrito.total();
-
-    // Estrategias de pago
-    const pagoTarjeta = new PagoTarjeta();
-    const pagoPayPal = new PagoPayPal();
-
-    // Construir texto
-    let texto = "Productos:\n";
-    productos.forEach(p => {
-        texto += `- ${p.mostrarInfo()}\n`;
-    });
-
-    texto += `
-    Usuarios notificados: Ana y Luis
-    Total del carrito: $${total}
-    
-    Metodos de pago:
-    - ${pagoTarjeta.pagar(total)}
-    - ${pagoPayPal.pagar(total)}
-    `;
-
-    document.getElementById("resultado").textContent = texto;
-}
-
-    // Suscribir la vista como observador del carrito
-    carrito.registrarObservador(actualizarVista);
-
-    // -------------------------------
-    // BOTONES PARA AGREGAR PRODUCTOS
-    // -------------------------------
-
-    function agregarCelular() {
-        const celular = factory.crear("electronico", "Celular", 500, 12);
-        carrito.agregar(celular);
-    }
-
-    function agregarCamisa() {
-        const camisa = factory.crear("ropa", "Camisa", 30, "M");
-        carrito.agregar(camisa);
-    }
-
+    // Agregar al carrito 
+    carrito.agregarProducto(celular);
+    carrito.agregarProducto(camisa);
+});
 </script>
 </body>
 </html>
