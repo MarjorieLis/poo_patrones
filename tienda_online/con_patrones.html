@@ -7,132 +7,132 @@
     <link rel="stylesheet" href="estilos.css"> <!-- Estilos separados -->
 </head>
 <body>
-    <h1>Tienda Online Con Patrones De Diseño</h1>
-  <!-- Botón para iniciar la demo -->
-  <button onclick="iniciarDemo()">Iniciar Demo</button>
+    <h1>TIENDA ONLINE CON PATRONES DE DISEÑO</h1>
+    <!-- Boton para iniciar la demo -->
+    <button onclick="iniciarDemo()">Mostrar Productos</button>
+    
+    <!-- Lugar donde se mostrara el resultado -->
+    <pre id="resultado"></pre>
 
-  <!-- Lugar donde se mostrará el resultado -->
-  <pre id="resultado"></pre>
-
-  <script>
+<script>
     // -------------------------------
-    // PATRÓN OBSERVER (simplificado)
+    // PATRON OBSERVER
     // -------------------------------
     class Observer {
-      update(mensaje) {
-        // Se espera que las clases hijas implementen este método
-        console.error("Error: método update no implementado");
-      }
+        update(mensaje) {
+        // Se espera que las clases hijas implementen este metodo
+        console.error("Error: metodo update no implementado");
     }
+}
 
     // Notificador que avisa a sus observadores
     class Notificador {
-      constructor() {
-        this.observadores = [];
-      }
+        constructor() {
+            this.observadores = [];
+    }
 
       // Añade un observador a la lista
-      suscribir(obs) {
+    suscribir(obs) {
         this.observadores.push(obs);
-      }
+    }
 
-      // Envía un mensaje a todos los observadores
-      notificar(mensaje) {
+      // Envia un mensaje a todos los observadores
+    notificar(mensaje) {
         this.observadores.forEach(o => o.update(mensaje));
-      }
     }
+}
 
     // -------------------------------
-    // PATRÓN FACTORY METHOD
+    // PATRON FACTORY METHOD
     // -------------------------------
-    // Clase base producto con encapsulación
+    // Clase base producto con encapsulacion
     class Producto {
-      constructor(nombre, precio) {
-        this._nombre = nombre;
-        this._precio = precio;
-      }
+        constructor(nombre, precio) {
+            this._nombre = nombre;
+            this._precio = precio;
+    }
 
-      getNombre() { return this._nombre; }
-      getPrecio() { return this._precio; }
+    getNombre() { return this._nombre; }
+    getPrecio() { return this._precio; }
 
-      mostrarInfo() {
+    mostrarInfo() {
         return this._nombre + " - $" + this._precio;
-      }
     }
+}
 
-    // Producto electrónico extiende Producto
+    // Producto electronico extiende Producto
     class ProductoElectronico extends Producto {
-      constructor(nombre, precio, garantia) {
-        super(nombre, precio);
-        this._garantia = garantia;
-      }
-
-      mostrarInfo() {
-        return super.mostrarInfo() + " (Garantía: " + this._garantia + " meses)";
-      }
+        constructor(nombre, precio, garantia) {
+            super(nombre, precio);
+            this._garantia = garantia;
     }
+
+    mostrarInfo() {
+        return super.mostrarInfo() + " (Garantia: " + this._garantia + " meses)";
+    }
+}
 
     // Producto ropa extiende Producto
     class ProductoRopa extends Producto {
-      constructor(nombre, precio, talla) {
-        super(nombre, precio);
-        this._talla = talla;
-      }
-
-      mostrarInfo() {
-        return super.mostrarInfo() + " - Talla: " + this._talla;
-      }
+        constructor(nombre, precio, talla) {
+            super(nombre, precio);
+            this._talla = talla;
     }
 
-    // Fábrica para crear productos según tipo
+    mostrarInfo() {
+        return super.mostrarInfo() + " - Talla: " + this._talla;
+    }
+}
+
+    // Fabrica para crear productos segun tipo
     class FactoryProducto {
-      crear(tipo, nombre, precio, extra) {
-        if(tipo === "electronico") {
-          return new ProductoElectronico(nombre, precio, extra);
-        } else if(tipo === "ropa") {
-          return new ProductoRopa(nombre, precio, extra);
-        } else {
-          return new Producto(nombre, precio);
+        crear(tipo, nombre, precio, extra) {
+            if(tipo === "electronico") {
+                return new ProductoElectronico(nombre, precio, extra);
+            } else if(tipo === "ropa") {
+                return new ProductoRopa(nombre, precio, extra);
+            } else {
+                return new Producto(nombre, precio);
+            }
         }
-      }
     }
 
     // -------------------------------
-    // PATRÓN STRATEGY (simplificado)
+    // PATRON STRATEGY
     // -------------------------------
     // Clase base para estrategia de pago
     class EstrategiaPago {
-      pagar(monto) {
-        console.error("Error: pagar() no implementado");
-      }
+        pagar(monto) {
+            console.error("Error: pagar() no implementado");
+        }
     }
 
     // Pago con tarjeta
     class PagoTarjeta extends EstrategiaPago {
-      pagar(monto) {
-        return "Pago con tarjeta: $" + monto;
-      }
+        pagar(monto) {
+            return "Pago con tarjeta: $" + monto;
     }
+}
 
     // Pago con PayPal
     class PagoPayPal extends EstrategiaPago {
-      pagar(monto) {
-        return "Pago con PayPal: $" + monto;
-      }
+        pagar(monto) {
+            return "Pago con PayPal: $" + monto;
     }
+}
 
     // -------------------------------
     // Usuario que observa notificaciones
     // -------------------------------
     class Usuario extends Observer {
-      constructor(nombre) {
-        super();
-        this.nombre = nombre;
-      }
+        constructor(nombre) {
+            super();
+            this.nombre = nombre;
+    }
 
-      update(mensaje) {
-        // Aquí solo mostramos por consola
-        console.log(this.nombre + " recibió: " + mensaje);
+    update(mensaje) {
+        // AquI solo mostramos por consola
+        console.log(this.nombre + " recibio: " + mensaje);
       }
     }
 
@@ -140,68 +140,67 @@
     // Carrito simple para productos
     // -------------------------------
     class Carrito {
-      constructor() {
-        this.productos = [];
-      }
-
-      agregar(producto) {
-        this.productos.push(producto);
-      }
-
-      total() {
-        return this.productos.reduce((acc, p) => acc + p.getPrecio(), 0);
-      }
+        constructor() {
+            this.productos = [];
     }
 
+    agregar(producto) {
+        this.productos.push(producto);
+    }
+
+    total() {
+        return this.productos.reduce((acc, p) => acc + p.getPrecio(), 0);
+    }
+}
+
     // -------------------------------
-    // Función que arranca la demo
+    // Funcion que arranca la demo
     // -------------------------------
     function iniciarDemo() {
-      const factory = new FactoryProducto();
-      const notificador = new Notificador();
+        const factory = new FactoryProducto();
+        const notificador = new Notificador();
 
-      // Creamos productos con la fábrica
-      const celular = factory.crear("electronico", "Celular", 500, 12);
-      const camisa = factory.crear("ropa", "Camisa", 30, "M");
+    // Creamos productos con la fabrica
+    const celular = factory.crear("electronico", "Celular", 500, 12);
+    const camisa = factory.crear("ropa", "Camisa", 30, "M");
 
-      // Creamos usuarios y los suscribimos al notificador
-      const ana = new Usuario("Ana");
-      const luis = new Usuario("Luis");
-      notificador.suscribir(ana);
-      notificador.suscribir(luis);
+    // Creamos usuarios y los suscribimos al notificador
+    const ana = new Usuario("Ana");
+    const luis = new Usuario("Luis");
+    notificador.suscribir(ana);
+    notificador.suscribir(luis);
 
-      // Enviamos notificación
-      notificador.notificar("¡Nuevo producto disponible!");
+    // Enviamos notificacion
+    notificador.notificar("¡Nuevo producto disponible!");
 
-      // Creamos carrito y agregamos productos
-      const carrito = new Carrito();
-      carrito.agregar(celular);
-      carrito.agregar(camisa);
+    // Creamos carrito y agregamos productos
+    const carrito = new Carrito();
+    carrito.agregar(celular);
+    carrito.agregar(camisa);
 
-      // Calculamos total
-      const total = carrito.total();
+    // Calculamos total
+    const total = carrito.total();
 
-      // Creamos estrategias de pago
-      const pagoTarjeta = new PagoTarjeta();
-      const pagoPayPal = new PagoPayPal();
+    // Creamos estrategias de pago
+    const pagoTarjeta = new PagoTarjeta();
+    const pagoPayPal = new PagoPayPal();
 
-      // Mostramos resultados en pantalla
-      const texto = `
-Productos:
-- ${celular.mostrarInfo()}
-- ${camisa.mostrarInfo()}
-
-Usuarios notificados: Ana y Luis
-
-Total del carrito: $${total}
-
-Métodos de pago:
-- ${pagoTarjeta.pagar(total)}
-- ${pagoPayPal.pagar(total)}
-      `;
-
-      document.getElementById("resultado").textContent = texto;
-    }
-  </script>
+    // Mostramos resultados en pantalla
+    const texto = `
+    Productos:
+    - ${celular.mostrarInfo()}
+    - ${camisa.mostrarInfo()}
+    Usuarios notificados: Ana y Luis
+    
+    Total del carrito: $${total}
+    
+    Metodos de pago:
+    - ${pagoTarjeta.pagar(total)}
+    - ${pagoPayPal.pagar(total)}
+    `;
+    
+    document.getElementById("resultado").textContent = texto;
+}
+</script>
 </body>
 </html>
