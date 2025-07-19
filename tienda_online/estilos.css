@@ -1,0 +1,23 @@
+/* Aplica a todo el cuerpo de la pagina */
+body {
+  font-family: Arial, sans-serif; /* Tipo de letra */
+  padding: 20px; /* Espacio alrededor del contenido */
+}
+
+/* Estilo para el titulo */
+h1 {
+  color: darkblue; /* Color azul oscuro */
+}
+
+/* Estilo para el boton */
+button {
+  padding: 10px 15px; /* Relleno interno del boton */
+  margin: 10px 0; /* Espacio arriba y abajo del boton */
+}
+
+/* Area donde se muestran los productos y el carrito */
+#productos, #carrito {
+  margin-top: 15px; /* Espacio por arriba */
+  padding: 10px; /* Espacio interno */
+  background-color: #f0f0f0; /* Fondo gris claro */
+}

@@ -1,105 +1,121 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Tienda Online - Sin Patrones</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        h1, h2 { color: #333; }
-        button { padding: 10px 15px; margin: 5px 0; }
-        pre { background: #f4f4f4; padding: 10px; border: 1px solid #ccc; white-space: pre-wrap; }
-    </style>
+    <meta charset="UTF-8"> <!-- Define el tipo de codificacion de caracteres -->
+    <title>Tienda Online Sin Patrones</title> <!-- Titulo que aparece en la pestaña -->
+    <link rel="stylesheet" href="estilos.css"> <!-- Enlaza el archivo de estilos CSS -->
 </head>
 <body>
-    <h1>🛒 Tienda Online - Sin Patrones de Diseño</h1>
-    <p>Usa POO básica: clases, herencia, encapsulación, prototipos.</p>
-    <button onclick="iniciarDemo()">Iniciar Demo</button>
-    <pre id="resultado"></pre>
+    
+    <!-- Titulo principal de la pagina -->
+    <h1>Tienda Online</h1>
+
+    <!-- Boton para ejecutar la funcion que muestra los productos -->
+    <button onclick="mostrarProductos()">Mostrar Productos</button>
+    
+    <!-- Aqui se mostraran los productos en pantalla -->
+    <div id="productos"></div>
+    
+    <!-- Aqui se mostrara el total del carrito -->
+    <div id="carrito"></div>
 
 <script>
-    // Clase base para todos los productos
+    // Clase base: Producto
     class Producto {
-        #nombre;  // Encapsulacion con atributo privado
-        #precio;  // Encapsulacion con atributo privado
-        
         constructor(nombre, precio) {
-            this.#nombre = nombre;
-            this.#precio = precio;
-        }
-        
-        get nombre() { return this.#nombre; } // Getter para acceder al valor privado
-        get precio() { return this.#precio; } // Getter para acceder al valor privado
-        
-        mostrarInfo() {
-            return `${this.nombre} - $${this.precio}`;
-        }
+            // Se usan guiones bajos para simular que las propiedades son privadas (encapsuladas)
+            this._nombre = nombre;
+            this._precio = precio;
     }
 
-    // Herencia: ProductoElectronico hereda de Producto
+    // Metodo para obtener el nombre
+    getNombre() {
+        return this._nombre;
+    }
+
+    // Metodo para obtener el precio
+    getPrecio() {
+        return this._precio;
+    }
+
+    // Metodo para mostrar la informacion del producto
+    mostrar() {
+        return this._nombre + " - $" + this._precio;
+    }
+}
+
+// Clase hija: ProductoRopa hereda de Producto
+class ProductoRopa extends Producto {
+    constructor(nombre, precio, talla) {
+        super(nombre, precio); // Llama al constructor de la clase Producto
+        this.talla = talla; // Nueva propiedad para la talla
+    }
+
+    // Reescribe el metodo mostrar para incluir la talla
+    mostrar() {
+        return super.mostrar() + " - Talla: " + this.talla;
+    }
+}
+
+// Clase hija: ProductoElectronico hereda de Producto
     class ProductoElectronico extends Producto {
         constructor(nombre, precio, garantia) {
-            super(nombre, precio);
-            this.garantia = garantia; // Atributo publico
-            }
-            
-            mostrarInfo() {
-                return `${super.mostrarInfo()} (Garantía: ${this.garantia} meses)`;
-            }
-        }
+            super(nombre, precio); // Llama al constructor de la clase Producto
+            this.garantia = garantia; // Nueva propiedad para la garantia
+    }
 
-    // Herencia: ProductoRopa hereda de Producto
-    class ProductoRopa extends Producto {
-        constructor(nombre, precio, talla) {
-            super(nombre, precio);
-            this.talla = talla; // Atributo publico
-            }
-
-    mostrarInfo() {
-        return `${super.mostrarInfo()} - Talla: ${this.talla}`;
+    // Reescribe el metodo mostrar para incluir la garantia
+    mostrar() {
+        return super.mostrar() + " - Garantia: " + this.garantia + " meses";
     }
 }
 
-    // Clase para gestionar el carrito de compras
+// Clase Carrito para manejar los productos agregados
     class Carrito {
         constructor() {
-            this.productos = [];
-        }
-
-    agregar(p) {
-        this.productos.push(p);
+            this.lista = []; // Lista donde se guardan los productos
     }
 
-    total() {
-        return this.productos.reduce((t, p) => t + p.precio, 0);
+    // Agrega un producto a la lista
+    agregar(producto) {
+        this.lista.push(producto);
+    }
+
+    // Calcula el total del carrito sumando todos los precios
+    mostrarTotal() {
+        let total = 0;
+        this.lista.forEach(p => total += p.getPrecio()); // Suma cada precio
+        return total; // Devuelve el total final
     }
 }
 
-    // Funcion principal que ejecuta la demo
-    function iniciarDemo() {
-      // Crear productos directamente sin fabrica
-    const celular = new ProductoElectronico("Celular", 500, 12);
-    const camisa = new ProductoRopa("Camisa", 30, "M");
+    // Funcion que se ejecuta cuando se hace clic en el boton
+    function mostrarProductos() {
+      // Crea un producto de tipo ropa
+    const prod1 = new ProductoRopa("Camisa", 25, "M");
 
-    // Crear un carrito y agregar productos
+      // Crea un producto electronico
+    const prod2 = new ProductoElectronico("Audifonos", 100, 6);
+
+      // Crea un nuevo carrito
     const carrito = new Carrito();
-    carrito.agregar(celular);
-    carrito.agregar(camisa);
 
-    // Calcular el total del carrito
-    const total = carrito.total();
+      // Agrega los productos al carrito
+    carrito.agregar(prod1);
+    carrito.agregar(prod2);
 
-    // Mostrar resultados en la pantalla
-    const salida = `
-    Productos:
-    - ${celular.mostrarInfo()}
-    - ${camisa.mostrarInfo()}
-    
-    Total del carrito: $${total}
+      // Muestra los productos en la pantalla
+    const contenedor = document.getElementById("productos");
+    contenedor.innerHTML = `
+        <p>${prod1.mostrar()}</p>
+        <p>${prod2.mostrar()}</p>
     `;
-    
-    document.getElementById('resultado').textContent = salida;
-}
+
+      // Muestra el total del carrito
+    const resumen = document.getElementById("carrito");
+    resumen.innerHTML = `<strong>Total del carrito: $${carrito.mostrarTotal()}</strong>`;
+    }
 </script>
+
 </body>
 </html>
