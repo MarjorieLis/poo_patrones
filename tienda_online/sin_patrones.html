@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Tienda Online - Sin Patrones</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h1, h2 { color: #333; }
+        button { padding: 10px 15px; margin: 5px 0; }
+        pre { background: #f4f4f4; padding: 10px; border: 1px solid #ccc; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>🛒 Tienda Online - Sin Patrones de Diseño</h1>
+    <p>Usa POO básica: clases, herencia, encapsulación, prototipos.</p>
+    <button onclick="iniciarDemo()">Iniciar Demo</button>
+    <pre id="resultado"></pre>
+
+<script>
+    // Clase base para todos los productos
+    class Producto {
+        #nombre;  // Encapsulacion con atributo privado
+        #precio;  // Encapsulacion con atributo privado
+        
+        constructor(nombre, precio) {
+            this.#nombre = nombre;
+            this.#precio = precio;
+        }
+        
+        get nombre() { return this.#nombre; } // Getter para acceder al valor privado
+        get precio() { return this.#precio; } // Getter para acceder al valor privado
+        
+        mostrarInfo() {
+            return `${this.nombre} - $${this.precio}`;
+        }
+    }
+
+    // Herencia: ProductoElectronico hereda de Producto
+    class ProductoElectronico extends Producto {
+        constructor(nombre, precio, garantia) {
+            super(nombre, precio);
+            this.garantia = garantia; // Atributo publico
+            }
+            
+            mostrarInfo() {
+                return `${super.mostrarInfo()} (Garantía: ${this.garantia} meses)`;
+            }
+        }
+
+    // Herencia: ProductoRopa hereda de Producto
+    class ProductoRopa extends Producto {
+        constructor(nombre, precio, talla) {
+            super(nombre, precio);
+            this.talla = talla; // Atributo publico
+            }
+
+    mostrarInfo() {
+        return `${super.mostrarInfo()} - Talla: ${this.talla}`;
+    }
+}
+
+    // Clase para gestionar el carrito de compras
+    class Carrito {
+        constructor() {
+            this.productos = [];
+        }
+
+    agregar(p) {
+        this.productos.push(p);
+    }
+
+    total() {
+        return this.productos.reduce((t, p) => t + p.precio, 0);
+    }
+}
+
+    // Funcion principal que ejecuta la demo
+    function iniciarDemo() {
+      // Crear productos directamente sin fabrica
+    const celular = new ProductoElectronico("Celular", 500, 12);
+    const camisa = new ProductoRopa("Camisa", 30, "M");
+
+    // Crear un carrito y agregar productos
+    const carrito = new Carrito();
+    carrito.agregar(celular);
+    carrito.agregar(camisa);
+
+    // Calcular el total del carrito
+    const total = carrito.total();
+
+    // Mostrar resultados en la pantalla
+    const salida = `
+    Productos:
+    - ${celular.mostrarInfo()}
+    - ${camisa.mostrarInfo()}
+    
+    Total del carrito: $${total}
+    `;
+    
+    document.getElementById('resultado').textContent = salida;
+}
+</script>
+</body>
+</html>
