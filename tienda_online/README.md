@@ -14,24 +14,15 @@ Se utilizan clases, herencia y objetos para representar:
 - Carrito de compras
 
 # Patrones de Diseño
-1. Observer
-Permite que el carrito avise cuando cambian los productos (por ejemplo, al agregar uno nuevo).
-
-¿Donde se usa?
+1. Observer: Permite que el carrito avise cuando cambian los productos (por ejemplo, al agregar uno nuevo).
 Se crea una clase Carrito que notifica a los "observadores" (como la vista) cuando hay un cambio.
 Ventaja: Permite que la vista este actualizada automaticamente sin acoplarla directamente al carrito.
 
-2. Factory Method
-Permite crear objetos Producto, ProductoRopa, ProductoElectronico desde una unica interfaz.
-
-¿Donde se usa?
+2. Factory Method: Permite crear objetos Producto, ProductoRopa, ProductoElectronico desde una unica interfaz.
 Hay una funcion crearProducto(tipo, nombre, precio, atributoExtra) que decide automaticamente que clase instanciar.
 Ventaja: No es necesario saber que clase especifica crear, lo hace la fabrica por nosotros.
 
-3. Strategy
-Permite cambiar la logica de calculo del total del carrito dependiendo de una estrategia (por ejemplo, aplicar o no un descuento).
-
-¿Donde se usa?
+3. Strategy: Permite cambiar la logica de calculo del total del carrito dependiendo de una estrategia (por ejemplo, aplicar o no un descuento).
 Se definen varias estrategias de calculo (TotalNormal, TotalConDescuento) y se puede cambiar facilmente la logica.
 Ventaja: Podemos modificar el comportamiento del carrito sin tocar su estructura interna.
 
